@@ -31,7 +31,9 @@ Indirect: a document, ticket, or webpage contains hidden instructions.
 
 Mitigations used here:
 
-- Instruction hierarchy in the system prompt
+- One combined prompt (product policy + security rules), with security winning on conflict
+- Instruction hierarchy; encoded, role-play, and authority-spoof bypasses treated as data
+- Rules re-applied every turn (no user-installed standing policy)
 - Wrapping untrusted content in `<untrusted_user_content>`
 
 These reduce accidents. They do not stop a determined attacker. Bound blast radius with tool permissions and output validation.

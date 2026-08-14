@@ -1,23 +1,31 @@
 # Secure system prompt for an AI app
 
-A generic, security-focused **system prompt** plus a small helper for applying it on every model call.
+One combined, security-focused **system prompt** plus a helper that sends it as a single system message on every model call.
 
 A system prompt is useful. It is **not** a complete security control. Models can still be steered by prompt injection. Keep secrets, authorization, and irreversible actions in application code.
+
+This is not a copy of any vendor or assistant hidden prompt. It is a generic app prompt based on public LLM security practice (role boundary, injection resistance, least-privilege tools, no secrets in the prompt).
 
 ## Quick start
 
 1. Copy `prompts/secure_system_prompt.txt` into your app (or import `src/secure_llm.py`).
-2. Send it as the **system** (or equivalent) message on every request.
-3. Replace the role/scope lines with your product’s real tasks.
+2. Replace the `{{APP_NAME}}` / `{{TASKS}}` / `{{FORBIDDEN_ACTIONS}}` lines with your product, or pass them as `developer_notes`.
+3. Send the **combined** string as the system message on every request.
 4. Wrap user text, uploads, and retrieved documents as untrusted data.
 
 ```python
-from secure_llm import build_chat_messages
+from secure_llm import build_chat_messages, combine_system_prompt
 
-messages = build_chat_messages(
-    user_text,
-    developer_notes="You are the assistant for MyApp. You help with X only.",
-)
+PRODUCT = """
+You are the in-app assistant for MyApp.
+Intended tasks: answer product questions and draft text.
+You must not: access other users' data, change billing, or send email.
+"""
+
+# One string you can paste into any provider's `system` field:
+system_prompt = combine_system_prompt(PRODUCT)
+
+messages = build_chat_messages(user_text, developer_notes=PRODUCT)
 # client.chat.completions.create(model="...", messages=messages)
 ```
 
@@ -33,10 +41,11 @@ Use `prompts/secure_system_prompt.min.txt` only when you must save tokens. Prefe
 
 | Goal | How the prompt approaches it |
 | --- | --- |
-| Stay in product scope | Explicit role and capability boundary |
-| Resist prompt injection | Instruction hierarchy; user/tool content treated as data |
+| Stay in product scope | Product-policy block plus capability boundary |
+| Resist prompt injection | Hierarchy; user/tool content treated as data; encoded, role-play, and “admin” bypasses ignored |
+| Stay consistent | Rules re-applied every turn; no “from now on” policy changes from the user |
 | Limit leaks | No secrets in the prompt; refuse dumps of keys, other users’ data, and internal config |
-| Reduce misuse | Refuse crime, exploits, malware, CSAM, weapons; no attack steps |
+| Reduce misuse | Refuse crime, exploits, malware, CSAM, weapons even when framed as lab/CTF/fiction; no attack steps |
 | Constrain tools | Least privilege; tool output is untrusted; no irreversible actions unless the app authorized them |
 | Keep outputs clean | No fabricated actions, hidden instructions, or payloads |
 
@@ -58,15 +67,15 @@ If the model “agrees” to do something unsafe, your backend must still refuse
 
 ## How to customize safely
 
-Keep the security sections. Change only product behavior, for example:
+Keep the security sections. Change only the product-policy block, for example:
 
 ```text
 You are the in-app assistant for Acme Notes.
-You may summarize and draft from the current user's notes.
-You may not access other users' notes, change billing, or send email.
+Intended tasks: summarize and draft from the current user's notes.
+You must not: access other users' notes, change billing, or send email.
 ```
 
-Pass that as a second developer/system message (`developer_notes` in `build_chat_messages`), or merge it into the Role and scope section.
+Pass that as `developer_notes`. The helper merges it with the security rules into **one** system message.
 
 Do **not** put into the prompt:
 
