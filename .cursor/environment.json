@@ -1,0 +1,11 @@
+{
+  "name": "Constellate",
+  "install": "npm install",
+  "terminals": [
+    {
+      "name": "server",
+      "command": "npm start"
+    }
+  ],
+  "ports": [3000]
+}
