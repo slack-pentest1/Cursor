@@ -37,6 +37,24 @@ python examples/apply_system_prompt.py "Summarize this note"
 
 Use `prompts/secure_system_prompt.min.txt` only when you must save tokens. Prefer the full prompt.
 
+## This vs a generic prompt
+
+Full write-up: [COMPARISON.md](COMPARISON.md).
+
+| Area | Generic (“You are a helpful assistant”) | This combined prompt |
+| --- | --- | --- |
+| Scope | Will try almost anything | Only your product’s allowed tasks |
+| Prompt injection | No rules | User/file/tool text is data, not commands |
+| Jailbreaks / fake admin | No rules | Ignore DAN, role-play, “I am the developer”, encoded asks |
+| Every turn | Can drift in a long chat | Rules re-applied; no “from now on” override |
+| Secrets / other users’ data | Not mentioned | Refuse leaks; prompt must not contain secrets |
+| Harmful asks | Vendor default only | Explicit refuse; no exploits, payloads, or bypasses |
+| Tools | Unconstrained | Least privilege; no delete/email/pay unless the app authorized it |
+| Output | May invent actions or hide instructions | No fake actions; no smuggled payloads |
+| Stops attackers by itself | No | No — backend authz still required |
+
+Use the generic one only for a toy chat with no tools and no private data. For a real app, use this prompt plus checks in code.
+
 ## What this prompt does
 
 | Goal | How the prompt approaches it |
@@ -118,5 +136,6 @@ Always send the system prompt **every turn**. Do not rely on the model rememberi
 
 - `prompts/secure_system_prompt.txt` — default prompt
 - `prompts/secure_system_prompt.min.txt` — short variant
+- `COMPARISON.md` — generic prompt vs this prompt
 - `src/secure_llm.py` — load prompt and wrap untrusted user content
 - `examples/apply_system_prompt.py` — wiring example
