@@ -1,8 +1,8 @@
 # Cursor
 
-## Staffline — Employee Details
+## Staffline — Team management
 
-Small React app for viewing **employee details** and **creating tasks** against a selected employee record.
+Small React app for managing a team roster: employee details, managers/reports, department overview, and follow-up tasks.
 
 ### Run
 
@@ -15,5 +15,7 @@ npm run dev
 ### What’s included
 
 - Sample employee roster (fictional data)
-- Detail view: role, department, email, location, status
-- Create / complete tasks tied to an employee
+- Add / edit people and assign managers
+- Department filter + team overview
+- Detail view with direct reports
+- Create / complete tasks per employee

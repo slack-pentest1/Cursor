@@ -1,3 +1,5 @@
+export type EmployeeStatus = 'Active' | 'On leave' | 'Contractor'
+
 export type Employee = {
   id: string
   name: string
@@ -6,7 +8,8 @@ export type Employee = {
   department: string
   location: string
   startDate: string
-  status: 'Active' | 'On leave' | 'Contractor'
+  status: EmployeeStatus
+  managerId: string | null
 }
 
 export type EmployeeTask = {
@@ -18,17 +21,37 @@ export type EmployeeTask = {
   status: 'Open' | 'Done'
 }
 
-export const employees: Employee[] = [
-  {
-    id: 'e1',
-    name: 'Maya Chen',
-    email: 'maya.chen@example.com',
-    role: 'Product Designer',
-    department: 'Design',
-    location: 'San Francisco',
-    startDate: '2023-04-12',
-    status: 'Active',
-  },
+export type EmployeeDraft = {
+  name: string
+  email: string
+  role: string
+  department: string
+  location: string
+  startDate: string
+  status: EmployeeStatus
+  managerId: string
+}
+
+export const emptyDraft = (): EmployeeDraft => ({
+  name: '',
+  email: '',
+  role: '',
+  department: '',
+  location: '',
+  startDate: new Date().toISOString().slice(0, 10),
+  status: 'Active',
+  managerId: '',
+})
+
+export const departments = [
+  'Engineering',
+  'Design',
+  'People',
+  'Analytics',
+  'Operations',
+] as const
+
+export const initialEmployees: Employee[] = [
   {
     id: 'e2',
     name: 'Jordan Blake',
@@ -38,6 +61,29 @@ export const employees: Employee[] = [
     location: 'Austin',
     startDate: '2021-09-01',
     status: 'Active',
+    managerId: null,
+  },
+  {
+    id: 'e1',
+    name: 'Maya Chen',
+    email: 'maya.chen@example.com',
+    role: 'Product Designer',
+    department: 'Design',
+    location: 'San Francisco',
+    startDate: '2023-04-12',
+    status: 'Active',
+    managerId: 'e2',
+  },
+  {
+    id: 'e5',
+    name: 'Alex Rivera',
+    email: 'alex.rivera@example.com',
+    role: 'Frontend Engineer',
+    department: 'Engineering',
+    location: 'Austin',
+    startDate: '2023-11-20',
+    status: 'Active',
+    managerId: 'e2',
   },
   {
     id: 'e3',
@@ -48,6 +94,7 @@ export const employees: Employee[] = [
     location: 'Remote',
     startDate: '2022-01-18',
     status: 'On leave',
+    managerId: null,
   },
   {
     id: 'e4',
@@ -58,6 +105,18 @@ export const employees: Employee[] = [
     location: 'Chicago',
     startDate: '2024-06-03',
     status: 'Contractor',
+    managerId: 'e3',
+  },
+  {
+    id: 'e6',
+    name: 'Casey Patel',
+    email: 'casey.patel@example.com',
+    role: 'Ops Lead',
+    department: 'Operations',
+    location: 'New York',
+    startDate: '2020-03-09',
+    status: 'Active',
+    managerId: null,
   },
 ]
 
@@ -78,4 +137,21 @@ export const initialTasks: EmployeeTask[] = [
     createdAt: '2026-08-05T09:30:00.000Z',
     status: 'Open',
   },
+  {
+    id: 't3',
+    employeeId: 'e5',
+    title: 'Ship accessibility pass',
+    notes: 'Cover keyboard nav and contrast on roster screens.',
+    createdAt: '2026-08-10T16:00:00.000Z',
+    status: 'Open',
+  },
 ]
+
+export function initials(name: string) {
+  return name
+    .split(' ')
+    .map((part) => part[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase()
+}
