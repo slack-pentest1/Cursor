@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Constellate — The Sky</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E%E2%9C%A8%3C/text%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <div class="stars-bg"></div>
+    <header class="topbar">
+      <a class="brand" href="/">
+        <span class="brand-mark">✦</span> Constellate
+      </a>
+      <nav>
+        <a href="/">Studio</a>
+        <a href="/gallery.html" class="active">The Sky</a>
+      </nav>
+    </header>
+
+    <main class="gallery">
+      <div class="gallery-head">
+        <h1>The shared night sky</h1>
+        <p class="lede" id="galleryLede">Every constellation published by a stargazer, forever.</p>
+      </div>
+      <div id="grid" class="grid"></div>
+      <div id="empty" class="empty hidden">
+        <p>No constellations yet. Be the first to <a href="/">chart one</a>.</p>
+      </div>
+    </main>
+
+    <script type="module" src="/gallery.js"></script>
+  </body>
+</html>

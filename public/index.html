@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Constellate — Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E%E2%9C%A8%3C/text%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <div class="stars-bg"></div>
+    <header class="topbar">
+      <a class="brand" href="/">
+        <span class="brand-mark">✦</span> Constellate
+      </a>
+      <nav>
+        <a href="/" class="active">Studio</a>
+        <a href="/gallery.html">The Sky</a>
+      </nav>
+    </header>
+
+    <main class="studio">
+      <section class="canvas-wrap">
+        <canvas id="sky" aria-label="Constellation drawing canvas"></canvas>
+        <p class="hint" id="hint">
+          Click the sky to place stars. Each new star links to the last one —
+          weave your own constellation.
+        </p>
+      </section>
+
+      <aside class="panel">
+        <h1>Design a constellation</h1>
+        <p class="lede">
+          Place glowing stars, connect them into a shape, name it, and send it
+          to the shared night sky for everyone to see.
+        </p>
+
+        <label class="field">
+          <span>Constellation name</span>
+          <input id="name" type="text" maxlength="60" placeholder="e.g. The Wandering Cursor" />
+        </label>
+        <label class="field">
+          <span>Your alias <em>(optional)</em></span>
+          <input id="author" type="text" maxlength="40" placeholder="anonymous stargazer" />
+        </label>
+
+        <div class="stat-row">
+          <div class="stat"><span id="starCount">0</span><small>stars</small></div>
+          <div class="stat"><span id="edgeCount">0</span><small>links</small></div>
+        </div>
+
+        <div class="actions">
+          <button id="undo" class="ghost" type="button">Undo</button>
+          <button id="clear" class="ghost" type="button">Clear</button>
+          <button id="publish" class="primary" type="button">Publish to the sky ✦</button>
+        </div>
+
+        <p id="status" class="status" role="status"></p>
+      </aside>
+    </main>
+
+    <script type="module" src="/studio.js"></script>
+  </body>
+</html>
